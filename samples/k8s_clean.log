@@ -1,0 +1,15 @@
+2026-01-15T08:00:01Z kubelet INFO Starting kubelet
+2026-01-15T08:00:02Z kubelet INFO Loading kubeconfig
+2026-01-15T08:00:03Z kubelet INFO Registered node
+2026-01-15T08:00:05Z containerd INFO Starting container runtime
+2026-01-15T08:00:06Z containerd INFO Runtime started
+2026-01-15T08:00:08Z kube-proxy INFO Starting kube-proxy
+2026-01-15T08:00:10Z kube-proxy INFO Sync iptables rules
+2026-01-15T08:00:12Z etcd INFO Ready to serve client requests
+2026-01-15T08:00:15Z apiserver INFO Serving securely on 0.0.0.0:6443
+2026-01-15T08:00:18Z scheduler INFO Starting scheduler
+2026-01-15T08:00:20Z controller-manager INFO Starting controller manager
+2026-01-15T08:00:25Z pod/nginx-abc123 INFO Health check passed
+2026-01-15T08:00:30Z pod/nginx-abc123 INFO Request handled in 3ms
+2026-01-15T08:00:35Z pod/nginx-abc123 INFO Request handled in 4ms
+2026-01-15T08:00:40Z pod/nginx-abc123 INFO Health check passed

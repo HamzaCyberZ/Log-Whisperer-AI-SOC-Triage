@@ -1,0 +1,23 @@
+Jan 15 09:01:12 server sshd[2201]: Accepted password for alice from 192.168.1.10 port 50122 ssh2
+Jan 15 09:03:45 server sshd[2215]: Accepted publickey for bob from 192.168.1.11 port 50189 ssh2
+Jan 15 09:07:02 server sshd[2230]: Accepted password for alice from 192.168.1.10 port 50210 ssh2
+Jan 15 09:12:33 server sshd[2244]: Accepted publickey for carol from 192.168.1.12 port 50255 ssh2
+Jan 15 09:15:01 server sshd[2260]: Accepted password for bob from 192.168.1.11 port 50301 ssh2
+Jan 15 09:20:44 server sshd[2277]: Accepted publickey for alice from 192.168.1.10 port 50344 ssh2
+Jan 15 09:25:19 server sshd[2290]: Accepted password for carol from 192.168.1.12 port 50390 ssh2
+Jan 15 09:31:08 server sshd[2301]: Accepted publickey for bob from 192.168.1.11 port 50441 ssh2
+Jan 15 09:36:52 server sshd[2315]: Accepted password for alice from 192.168.1.10 port 50490 ssh2
+Jan 15 09:42:17 server sshd[2329]: Accepted publickey for carol from 192.168.1.12 port 50533 ssh2
+Jan 15 10:01:03 server sshd[2410]: Failed password for root from 203.0.113.55 port 51200 ssh2
+Jan 15 10:01:05 server sshd[2411]: Failed password for root from 203.0.113.55 port 51202 ssh2
+Jan 15 10:01:07 server sshd[2412]: Failed password for root from 203.0.113.55 port 51204 ssh2
+Jan 15 10:01:09 server sshd[2413]: Failed password for root from 203.0.113.55 port 51206 ssh2
+Jan 15 10:01:11 server sshd[2414]: Failed password for root from 203.0.113.55 port 51208 ssh2
+Jan 15 10:01:13 server sshd[2415]: Failed password for admin from 203.0.113.55 port 51210 ssh2
+Jan 15 10:01:15 server sshd[2416]: Failed password for admin from 203.0.113.55 port 51212 ssh2
+Jan 15 10:01:17 server sshd[2417]: Failed password for ubuntu from 203.0.113.55 port 51214 ssh2
+Jan 15 10:01:19 server sshd[2418]: Failed password for ubuntu from 203.0.113.55 port 51216 ssh2
+Jan 15 10:01:21 server sshd[2419]: Failed password for root from 203.0.113.55 port 51218 ssh2
+Jan 15 10:01:23 server sshd[2420]: Accepted password for root from 203.0.113.55 port 51220 ssh2
+Jan 15 10:01:40 server sshd[2421]: session opened for user root by (uid=0)
+Jan 15 10:02:01 server sshd[2421]: Received disconnect from 203.0.113.55 port 51220:11: disconnected by user
