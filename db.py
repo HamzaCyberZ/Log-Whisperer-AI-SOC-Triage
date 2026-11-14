@@ -133,6 +133,31 @@ def save_history(username, total, suspicious, report):
 
 
 # ==========================================
+# SAVE INCIDENT HISTORY
+# ==========================================
+
+def save_history(username, total, suspicious, report):
+    try:
+        if supabase is None:
+            return False
+
+        data = {
+            "username": username,
+            "total_lines": int(total),
+            "suspicious_lines": int(suspicious),
+            "report": str(report)
+        }
+
+        supabase.table("history").insert(data).execute()
+
+        return True
+
+    except Exception as e:
+        st.error(f"History save error: {e}")
+        return False
+
+
+# ==========================================
 # GET USER INCIDENT HISTORY
 # ==========================================
 
