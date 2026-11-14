@@ -9,7 +9,7 @@ def generate_incident_report(suspicious_lines, summary):
         return "No suspicious lines to analyze."
 
     # Read API key securely from Streamlit Secrets
-    api_key = st.secrets.get("sk-RVdbxarCMOzUI698bgMXBlNviFS71HfAjdVev5Hz4pSq6DId")
+    api_key = st.secrets.get("")
 
     if not api_key:
         return "Groq API key missing. Configure GROQ_API_KEY in Streamlit Secrets."

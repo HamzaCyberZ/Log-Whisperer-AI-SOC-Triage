@@ -1,37 +1,134 @@
-# db.py (Supabase version)
+
 import streamlit as st
 from supabase import create_client
 import hashlib
 
-url = st.secrets["https://supabase.com/dashboard/project/qfjccefmdzoksytqunes"]
-key = st.secrets["ESpWiTT0pTYcobqnA7iC3g_vaaXoGyS"]
-supabase = create_client(url, key)
+
+# ==========================================
+# SUPABASE CONFIGURATION
+# ==========================================
+
+@st.cache_resource
+def get_supabase_client():
+    url = st.secrets["supabase_url"]
+    key = st.secrets["supabase_key"]
+
+    return create_client(url, key)
+
+
+supabase = get_supabase_client()
+
+
+# ==========================================
+# DATABASE INITIALIZATION
+# ==========================================
+
+def init_db():
+    try:
+        return supabase is not None
+    except Exception as e:
+        st.error(f"Database initialization error: {e}")
+        return False
+
+
+# ==========================================
+# PASSWORD HASHING
+# ==========================================
 
 def hash_password(password):
-    return hashlib.sha256(str(password).strip().encode()).hexdigest()
+    return hashlib.sha256(
+        password.encode("utf-8")
+    ).hexdigest()
+
+
+# ==========================================
+# USER REGISTRATION
+# ==========================================
 
 def register_user(username, password):
     try:
-        supabase.table("users").insert({"username": username, "password": hash_password(password)}).execute()
+        username = username.strip()
+
+        if not username or not password:
+            return False
+
+        existing = (
+            supabase.table("users")
+            .select("username")
+            .eq("username", username)
+            .execute()
+        )
+
+        if existing.data:
+            return False
+
+        supabase.table("users").insert({
+            "username": username,
+            "password": hash_password(password)
+        }).execute()
+
         return True
-    except Exception:
+
+    except Exception as e:
+        st.error(f"Registration error: {e}")
         return False
+
+
+# ==========================================
+# USER LOGIN
+# ==========================================
 
 def verify_user(username, password):
     try:
-        res = supabase.table("users").select("password").eq("username", username).execute()
-        if res.data and res.data[0]["password"] == hash_password(password):
-            return True
-        return False
-    except Exception:
+        result = (
+            supabase.table("users")
+            .select("username")
+            .eq("username", username.strip())
+            .eq("password", hash_password(password))
+            .execute()
+        )
+
+        return len(result.data) > 0
+
+    except Exception as e:
+        st.error(f"Login error: {e}")
         return False
 
-def save_history(username, total, suspicious, report):
-    supabase.table("history").insert({
-        "username": username, "total_lines": total, 
-        "suspicious_lines": suspicious, "report": report
-    }).execute()
+
+# ==========================================
+# SAVE INCIDENT HISTORY
+# ==========================================
+
+def save_history(username, logs, report):
+    try:
+        supabase.table("history").insert({
+            "username": username,
+            "logs": logs,
+            "report": report
+        }).execute()
+
+        return True
+
+    except Exception as e:
+        st.error(f"History save error: {e}")
+        return False
+
+
+# ==========================================
+# GET USER INCIDENT HISTORY
+# ==========================================
 
 def get_history(username):
-    res = supabase.table("history").select("*").eq("username", username).order("timestamp", desc=True).execute()
-    return [(r["timestamp"], r["total_lines"], r["suspicious_lines"], r["report"]) for r in res.data]
+    try:
+        result = (
+            supabase.table("history")
+            .select("*")
+            .eq("username", username)
+            .execute()
+        )
+
+        return result.data
+
+    except Exception as e:
+        st.error(f"History retrieval error: {e}")
+        return []
