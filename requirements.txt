@@ -1,8 +1,6 @@
-streamlit==1.40.0
-requests==2.32.3
-scikit-learn==1.5.2
-pandas==2.2.3
-numpy==1.26.4
+streamlit
+pandas
+numpy
+scikit-learn
+python-dotenv
 supabase
-groq
-fpdf2
