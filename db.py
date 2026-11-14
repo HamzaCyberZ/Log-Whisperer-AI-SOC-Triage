@@ -1,19 +1,24 @@
 
 import streamlit as st
-from supabase import create_client
 import hashlib
+from supabase import create_client
 
 
 # ==========================================
-# SUPABASE CONFIGURATION
+# SUPABASE CONNECTION
 # ==========================================
 
 @st.cache_resource
 def get_supabase_client():
-    url = st.secrets["supabase_url"]
-    key = st.secrets["supabase_key"]
+    try:
+        url = st.secrets["supabase_url"]
+        key = st.secrets["supabase_key"]
 
-    return create_client(url, key)
+        return create_client(url, key)
+
+    except Exception as e:
+        st.error(f"Supabase connection error: {e}")
+        return None
 
 
 supabase = get_supabase_client()
@@ -24,11 +29,11 @@ supabase = get_supabase_client()
 # ==========================================
 
 def init_db():
-    try:
-        return supabase is not None
-    except Exception as e:
-        st.error(f"Database initialization error: {e}")
+    if supabase is None:
+        st.error("Supabase database is not connected.")
         return False
+
+    return True
 
 
 # ==========================================
@@ -47,6 +52,9 @@ def hash_password(password):
 
 def register_user(username, password):
     try:
+        if supabase is None:
+            return False
+
         username = username.strip()
 
         if not username or not password:
@@ -80,6 +88,9 @@ def register_user(username, password):
 
 def verify_user(username, password):
     try:
+        if supabase is None:
+            return False
+
         result = (
             supabase.table("users")
             .select("username")
@@ -99,13 +110,20 @@ def verify_user(username, password):
 # SAVE INCIDENT HISTORY
 # ==========================================
 
-def save_history(username, logs, report):
+def save_history(username, total, suspicious, report):
     try:
-        supabase.table("history").insert({
+        if supabase is None:
+            return False
+
+        data = {
             "username": username,
-            "logs": logs,
-            "report": report
-        }).execute()
+            "logs": str(total),
+            "total_lines": int(total),
+            "suspicious_lines": int(suspicious),
+            "report": str(report)
+        }
+
+        supabase.table("history").insert(data).execute()
 
         return True
 
@@ -120,14 +138,30 @@ def save_history(username, logs, report):
 
 def get_history(username):
     try:
+        if supabase is None:
+            return []
+
         result = (
             supabase.table("history")
-            .select("*")
+            .select(
+                "created_at,total_lines,suspicious_lines,report"
+            )
             .eq("username", username)
+            .order("created_at", desc=True)
             .execute()
         )
 
-        return result.data
+        history_records = []
+
+        for row in result.data:
+            history_records.append((
+                row.get("created_at", "Unknown"),
+                row.get("total_lines", 0),
+                row.get("suspicious_lines", 0),
+                row.get("report", "")
+            ))
+
+        return history_records
 
     except Exception as e:
         st.error(f"History retrieval error: {e}")
